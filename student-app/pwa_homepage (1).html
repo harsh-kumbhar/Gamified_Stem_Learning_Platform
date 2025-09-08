@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="Interactive STEM learning platform with offline quizzes and games">
+    <title>STEM Learn - Interactive Education</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        
+        :root {
+            /* Primary Colors */
+            --primary-blue: #2563eb;
+            --primary-green: #10b981;
+            --primary-blue-light: #3b82f6;
+            --primary-green-light: #34d399;
+            
+            /* Accent Color */
+            --accent-yellow: #fbbf24;
+            --accent-orange: #f97316;
+            
+            /* Neutral Colors */
+            --white: #ffffff;
+            --light-gray: #f8fafc;
+            --medium-gray: #e2e8f0;
+            --dark-gray: #64748b;
+            --charcoal: #334155;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-green) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent-yellow) 0%, var(--accent-orange) 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+            body {
+        background: #fff;
+        color: #111;
+        transition: background 0.3s, color 0.3s;
+             }
+    .dark-mode {
+        background: #202124;
+        color: #e8eaed;
+                }
+    .toggle-dark-mode {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        padding: 8px 14px;
+        border-radius: 5px;
+        background: #444;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        z-index: 100;
+                        }
+    .dark-mode .toggle-dark-mode {
+        background: #888;
+        color: #181818;
+                    }
+        
+        /* Header */
+        .header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: var(--accent-yellow);
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .welcome-message {
+            font-size: 1.1rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+        
+        .student-info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.75rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            display: inline-block;
+        }
+        
+        /* Quick Stats */
+        .quick-stats {
+            padding: 1.5rem 1rem;
+            background: white;
+            margin: -1rem 1rem 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 3;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 0.5rem;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 1rem;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Action Cards */
+        .action-cards {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .action-card.primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .action-card.accent {
+            background: var(--gradient-accent);
+            color: white;
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+        
+        .card-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            color: inherit;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        
+        .card-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        /* Subject Grid */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .subject-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .subject-card:hover {
+            border-color: var(--primary-blue);
+            transform: scale(1.02);
+        }
+        
+        .subject-card.math { --subject-color: #ef4444; }
+        .subject-card.science { --subject-color: #10b981; }
+        .subject-card.tech { --subject-color: #3b82f6; }
+        .subject-card.engineering { --subject-color: #f59e0b; }
+        
+        .subject-icon {
+            font-size: 2rem;
+            color: var(--subject-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .subject-name {
+            font-weight: 600;
+            color: var(--charcoal);
+            font-size: 0.9rem;
+        }
+        
+        .subject-progress {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+            margin-top: 0.25rem;
+        }
+        
+        /* Recent Activity */
+        .activity-list {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .activity-icon.quiz { background: var(--primary-blue); }
+        .activity-icon.game { background: var(--primary-green); }
+        .activity-icon.badge { background: var(--accent-yellow); }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--charcoal);
+        }
+        
+        .activity-time {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem;
+            border-top: 1px solid var(--medium-gray);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            z-index: 100;
+        }
+        
+        .nav-item {
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark-gray);
+        }
+        
+        .nav-item.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        .nav-item i {
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .nav-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-slide-up {
+            animation: slideUp 0.6s ease forwards;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .header {
+                padding: 0.75rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .stats-grid {
+                gap: 0.5rem;
+            }
+            
+            .stat-number {
+                font-size: 1.2rem;
+            }
+            
+            .action-card {
+                padding: 1rem;
+            }
+            
+            .card-icon {
+                font-size: 2rem;
+            }
+        }
+        
+        /* PWA Specific Styles */
+        .pwa-install-prompt {
+            background: var(--accent-yellow);
+            color: var(--charcoal);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .offline-indicator {
+            background: var(--dark-gray);
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            display: none;
+        }
+        
+        .offline-indicator.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" id="offlineIndicator">
+        <i class="fas fa-wifi-slash"></i> You're offline - Your progress will sync when connected
+    </div>
+    <button class="toggle-dark-mode" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+    <!-- PWA Install Prompt -->
+    <div class="pwa-install-prompt" id="installPrompt">
+        <i class="fas fa-download"></i> Install app for better experience
+    </div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-atom"></i>
+                <h1>STEM Learn</h1>
+            </div>
+            <p class="welcome-message">Ready to explore and learn?</p>
+            <div class="student-info">
+                <i class="fas fa-user-circle"></i> Welcome back, Explorer!
+            </div>
+        </div>
+    </header>
+    
+    <!-- Quick Stats -->
+    <section class="quick-stats animate-slide-up">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">15</div>
+                <div class="stat-label">Quizzes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">1,240</div>
+                <div class="stat-label">Points</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Badges</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Quick Actions -->
+        <h2 class="section-title">
+            <i class="fas fa-bolt"></i>
+            Quick Start
+        </h2>
+        
+        <div class="action-cards animate-slide-up">
+            <div class="action-card primary" onclick="startRandomQuiz()">
+                <div class="card-icon">🎯</div>
+                <h3 class="card-title">Take Random Quiz</h3>
+                <p class="card-description">Challenge yourself with a surprise quiz from any subject!</p>
+                <button class="card-button">
+                    <i class="fas fa-play"></i>
+                    Start Now
+                </button>
+            </div>
+            
+            <div class="action-card accent" onclick="openGames()">
+                <div class="card-icon">🎮</div>
+                <h3 class="card-title">STEM Games</h3>
+                <p class="card-description">Learn through interactive physics and math games</p>
+                <button class="card-button">
+                    <i class="fas fa-gamepad"></i>
+                    Play Games
+                </button>
+            </div>
+        </div>
+        
+        <!-- Subjects -->
+        <h2 class="section-title">
+            <i class="fas fa-book-open"></i>
+            Subjects
+        </h2>
+        
+        <div class="subjects-grid animate-slide-up">
+            <div class="subject-card math" onclick="openSubject('math')">
+                <div class="subject-icon">🧮</div>
+                <div class="subject-name">Mathematics</div>
+                <div class="subject-progress">5 of 8 completed</div>
+            </div>
+            
+            <div class="subject-card science" onclick="openSubject('science')">
+                <div class="subject-icon">🔬</div>
+                <div class="subject-name">Science</div>
+                <div class="subject-progress">7 of 10 completed</div>
+            </div>
+            
+            <div class="subject-card tech" onclick="openSubject('tech')">
+                <div class="subject-icon">💻</div>
+                <div class="subject-name">Technology</div>
+                <div class="subject-progress">3 of 6 completed</div>
+            </div>
+            
+            <div class="subject-card engineering" onclick="openSubject('engineering')">
+                <div class="subject-icon">⚙️</div>
+                <div class="subject-name">Engineering</div>
+                <div class="subject-progress">2 of 5 completed</div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <h2 class="section-title">
+            <i class="fas fa-history"></i>
+            Recent Activity
+        </h2>
+        
+        <div class="activity-list animate-slide-up">
+            <div class="activity-item">
+                <div class="activity-icon quiz">
+                    <i class="fas fa-question"></i>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">Completed "Basic Algebra Quiz"</div>
+                    <div class="activity-time">2 hours ago • 85 points</div>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon badge">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">Earned "Math Whiz" badge!</div>
+                    <div class="activity-time">Yesterday</div>
+                </div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon game">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-title">Physics Simulator - Level 3</div>
+                    <div class="activity-time">2 days ago • 450 points</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom spacing for fixed nav -->
+        <div style="height: 80px;"></div>
+    </main>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span class="nav-label">Home</span>
+        </a>
+        <a href="#" class="nav-item" onclick="openQuizzes()">
+            <i class="fas fa-brain"></i>
+            <span class="nav-label">Quizzes</span>
+        </a>
+        <a href="#" class="nav-item" onclick="openGames()">
+            <i class="fas fa-gamepad"></i>
+            <span class="nav-label">Games</span>
+        </a>
+        <a href="#" class="nav-item" onclick="openProfile()">
+            <i class="fas fa-user"></i>
+            <span class="nav-label">Profile</span>
+        </a>
+    </nav>
+    
+    <script>
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    // Save mode in localStorage
+    if (document.body.classList.contains('dark-mode')) {
+      localStorage.setItem('theme', 'dark');
+    } else {
+      localStorage.setItem('theme', 'light');
+    }
+  }
+  // On page load, set theme
+  (function() {
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+    }
+  })();
+        
+        // Load saved theme
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
+                document.body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+        
+        // Initialize theme on page load
+        document.addEventListener('DOMContentLoaded', loadTheme);
+        
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                if (e.matches) {
+                    document.body.setAttribute('data-theme', 'dark');
+                    document.getElementById('themeIcon').className = 'fas fa-sun';
+                } else {
+                    document.body.removeAttribute('data-theme');
+                    document.getElementById('themeIcon').className = 'fas fa-moon';
+                }
+            }
+        });
+        
+        // PWA and Mobile functionality
+        let deferredPrompt;
+        
+        // Check if app is installed
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallPrompt();
+        });
+        
+        function showInstallPrompt() {
+            const prompt = document.getElementById('installPrompt');
+            prompt.style.display = 'block';
+            prompt.onclick = installApp;
+        }
+        
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('App installed');
+                        document.getElementById('installPrompt').style.display = 'none';
+                    }
+                });
+                deferredPrompt = null;
+            }
+        }
+        
+        // Network status
+        function updateOnlineStatus() {
+            const indicator = document.getElementById('offlineIndicator');
+            if (navigator.onLine) {
+                indicator.classList.remove('show');
+                // Sync offline data here
+                syncOfflineData();
+            } else {
+                indicator.classList.add('show');
+            }
+        }
+        
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+        
+        // Navigation functions
+        function startRandomQuiz() {
+            // Add haptic feedback for mobile
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            console.log('Starting random quiz...');
+            // Navigate to quiz selection or start random quiz
+        }
+        
+        function openGames() {
+            console.log('Opening games...');
+            // Navigate to games section
+        }
+        
+        function openSubject(subject) {
+            console.log(`Opening ${subject} subject...`);
+            // Navigate to specific subject quizzes
+        }
+        
+        function openQuizzes() {
+            console.log('Opening quizzes...');
+            // Navigate to quiz list
+        }
+        
+        function openProfile() {
+            console.log('Opening profile...');
+            // Navigate to user profile
+        }
+        
+        function syncOfflineData() {
+            // Sync cached quiz results and progress when online
+            console.log('Syncing offline data...');
+        }
+        
+        // Animate elements on scroll
+        const animateElements = document.querySelectorAll('.animate-slide-up');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${Array.from(animateElements).indexOf(entry.target) * 0.1}s`;
+                    entry.target.classList.add('animate-slide-up');
+                }
+            });
+        });
+        
+        animateElements.forEach(el => observer.observe(el));
+        
+        // Service Worker registration (for PWA)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+        
+        // Touch and gesture support
+        let touchStartX = 0;
+        let touchStartY = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        });
+        
+        document.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            
+            // Swipe gestures (optional)
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                if (deltaX > 0) {
+                    console.log('Swipe right');
+                } else {
+                    console.log('Swipe left');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

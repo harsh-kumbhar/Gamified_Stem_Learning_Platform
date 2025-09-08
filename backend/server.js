@@ -1,25 +1,36 @@
-// backend/server.js
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
+import express from "express";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";   // Import DB connection
+import userRoutes from "./routes/userRoutes.js";
 
-dotenv.config(); // loads variables from .env
+// Load environment variables
+dotenv.config();
 
+// Initialize app
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Connect to MongoDB
+connectDB();
 
-// Test route
+// Middleware
+app.use(express.json()); // for parsing application/json
+
+// Health check route
 app.get("/api/health", (req, res) => {
-  res.json({ status: "Backend is running 🚀" });
+  res.json({ status: "ok", message: "Backend is running 🚀" });
+});
+
+// Root route
+app.get("/", (req, res) => {
+  res.send("Welcome to the Gamified STEM Learning Platform Backend 🚀");
 });
 
 // Start server
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+});
 
-app.get("/", (req, res) => {
-    res.send("Welcome to the Gamified STEM Learning Platform Backend 🚀");
-  });
-  
+
+
+app.use("/api/users", userRoutes);

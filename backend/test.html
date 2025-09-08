@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>Test User Routes</h2>
+
+  <h3>Register</h3>
+  Name: <input id="name"><br>
+  Email: <input id="email"><br>
+  Password: <input id="password"><br>
+  <button onclick="register()">Register</button>
+  <pre id="registerResult"></pre>
+
+  <h3>Login</h3>
+  Email: <input id="loginEmail"><br>
+  Password: <input id="loginPassword"><br>
+  <button onclick="login()">Login</button>
+  <pre id="loginResult"></pre>
+
+  <h3>Get Profile</h3>
+  <button onclick="getProfile()">Profile</button>
+  <pre id="profileResult"></pre>
+
+<script>
+let token = "";
+
+async function register() {
+  const res = await fetch('http://localhost:5000/api/users/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value
+    })
+  });
+  const data = await res.json();
+  document.getElementById('registerResult').textContent = JSON.stringify(data, null, 2);
+}
+
+async function login() {
+  const res = await fetch('http://localhost:5000/api/users/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: document.getElementById('loginEmail').value,
+      password: document.getElementById('loginPassword').value
+    })
+  });
+  const data = await res.json();
+  token = data.token || "";
+  document.getElementById('loginResult').textContent = JSON.stringify(data, null, 2);
+}
+
+async function getProfile() {
+  const res = await fetch('http://localhost:5000/api/users/profile', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  });
+  const data = await res.json();
+  document.getElementById('profileResult').textContent = JSON.stringify(data, null, 2);
+}
+</script>
+</body>
+</html>

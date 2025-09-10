@@ -4,9 +4,11 @@ import Register from "../pages/register";
 
 function App() {
   return (
-    <Router>
+    <Router basename="/student">
       <Routes>
-        <Route path="/" element={<Register />} /> {/* Default = Register */}
+        {/* Default route → Register */}
+        <Route path="/" element={<Register />} />
+        {/* Correct student paths */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

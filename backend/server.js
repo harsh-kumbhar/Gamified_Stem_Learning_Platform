@@ -20,22 +20,23 @@ app.use("/api/schools", schoolRoutes);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ✅ Student app (includes login/register/pages)
+// Student app
 app.use("/student", express.static(path.join(__dirname, "../student-app/dist")));
 app.get(/^\/student(\/.*)?$/, (req, res) => {
   res.sendFile(path.join(__dirname, "../student-app/dist/index.html"));
 });
 
-// ✅ Teacher app
+// Teacher app
 app.use("/teacher", express.static(path.join(__dirname, "../teacher-dashboard/dist")));
 app.get(/^\/teacher(\/.*)?$/, (req, res) => {
   res.sendFile(path.join(__dirname, "../teacher-dashboard/dist/index.html"));
 });
 
-// ✅ Root route → redirect to /student/login
+// Root redirect
 app.get("/", (req, res) => {
-  res.redirect("/student/login");
+  res.redirect("/student");
 });
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "/api"; 
+const API_URL = "/api";
 
 // Register API
 export const register = async (name, email, password, role,schoolId) => {

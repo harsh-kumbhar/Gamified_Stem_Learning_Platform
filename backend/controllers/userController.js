@@ -11,8 +11,11 @@ export const registerUser = async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "User already exists" });
 
-    const school = await School.findById(schoolId);
-    if (!school) return res.status(400).json({ message: "Invalid school" });
+    // Validate school for student/teacher only
+    if (role !== "admin") {
+      const school = await School.findById(schoolId);
+      if (!school) return res.status(400).json({ message: "Invalid school" });
+    }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);

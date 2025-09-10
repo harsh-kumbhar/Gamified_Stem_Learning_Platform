@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../pages/auth.css";
+import { getSchools } from "../src/api/schools";  // 👈 add at top
 
 function Register() {
   const [name, setName] = useState("");
@@ -14,18 +15,19 @@ function Register() {
   const [success, setSuccess] = useState("");
 
   // Fetch schools from backend
+
   useEffect(() => {
     const fetchSchools = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/schools");
-        setSchools(res.data);
+        const data = await getSchools();
+        setSchools(data);
       } catch (err) {
         console.error("Error fetching schools:", err);
-        setError("Failed to load schools. Try again later.");
       }
     };
     fetchSchools();
   }, []);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();

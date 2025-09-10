@@ -5,6 +5,7 @@ import userRoutes from "./routes/userRoutes.js";
 import schoolRoutes from "./routes/schoolRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import cors from "cors";
 
 dotenv.config();
 connectDB();
@@ -13,6 +14,11 @@ const app = express();
 app.use(express.json());
 
 // API routes
+
+app.use(cors({
+  origin: "http://localhost:5173",  // allow frontend
+  credentials: true
+}));
 app.use("/api/users", userRoutes);
 app.use("/api/schools", schoolRoutes);
 

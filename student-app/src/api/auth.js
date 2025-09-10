@@ -1,13 +1,11 @@
+// src/api/auth.js
 import axios from "axios";
 
-// Use backend API from .env or fallback to localhost
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 const API = `${API_BASE_URL}/api/users`;
 
-// Register API
 export const register = async (name, email, password, role, schoolId) => {
-  const res = await axios.post(`${API}/register`, {
+  const res = await axios.post(`${API_BASE_URL}/api/users/register`, {
     name,
     email,
     password,
@@ -18,10 +16,7 @@ export const register = async (name, email, password, role, schoolId) => {
 };
 
 export const login = async (email, password) => {
-  const res = await axios.post(`${API}/login`, {
-    email,
-    password,
-  });
+  const res = await axios.post(`${API}/login`, { email, password });
   localStorage.setItem("token", res.data.token);
   return res.data;
 };

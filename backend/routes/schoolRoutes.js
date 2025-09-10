@@ -1,8 +1,15 @@
 import express from "express";
-import { getSchools } from "../controllers/schoolController.js";
+import School from "../models/School.js";
 
 const router = express.Router();
 
-router.get("/", getSchools);
+router.get("/", async (req, res) => {
+  try {
+    const schools = await School.find();
+    res.json(schools);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 export default router;

@@ -12,6 +12,7 @@ connectDB();
 const app = express();
 app.use(express.json());
 
+// API routes
 app.use("/api/users", userRoutes);
 app.use("/api/schools", schoolRoutes);
 
@@ -19,22 +20,22 @@ app.use("/api/schools", schoolRoutes);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve Student App
+// ✅ Student app (includes login/register/pages)
 app.use("/student", express.static(path.join(__dirname, "../student-app/dist")));
-app.get("/student/*", (req, res) => {
+app.get(/^\/student(\/.*)?$/, (req, res) => {
   res.sendFile(path.join(__dirname, "../student-app/dist/index.html"));
 });
 
-// Serve Teacher Dashboard
+// ✅ Teacher app
 app.use("/teacher", express.static(path.join(__dirname, "../teacher-dashboard/dist")));
-app.get("/teacher/*", (req, res) => {
+app.get(/^\/teacher(\/.*)?$/, (req, res) => {
   res.sendFile(path.join(__dirname, "../teacher-dashboard/dist/index.html"));
 });
 
-// (Optional) Root route → redirect to student or teacher
+// ✅ Root route → redirect to /student/login
 app.get("/", (req, res) => {
-  res.redirect("/student");
+  res.redirect("/student/login");
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

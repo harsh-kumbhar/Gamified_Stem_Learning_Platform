@@ -3,6 +3,8 @@ import { useState } from "react";
 import axios from "axios";
 import "../pages/auth.css";
 
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +17,7 @@ function Login() {
     setSuccess("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/users/login", {
+      const res = await axios.post(`${API_BASE}/api/users/login`, {
         email,
         password,
       });
@@ -23,10 +25,10 @@ function Login() {
       console.log("Login success:", res.data);
       setSuccess("Login successful ✅");
 
-      // Save JWT token in localStorage for authenticated requests
+      // Save JWT token in localStorage
       localStorage.setItem("token", res.data.token);
 
-      // Optionally redirect to dashboard
+      // Redirect example
       // window.location.href = "/dashboard";
 
     } catch (err) {

@@ -1,6 +1,5 @@
-// controllers/quizController.js
-import Quiz from "../models/quiz.js";
-import Course from "../models/course.js";
+import Quiz from "../models/Quiz.js";
+import Course from "../models/Course.js";
 import User from "../models/User.js";
 
 // Create Quiz (Teacher only)

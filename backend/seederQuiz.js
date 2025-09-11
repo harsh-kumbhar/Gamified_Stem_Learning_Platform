@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import Quiz from "./models/quiz.js";
-import Course from "./models/course.js";
 import User from "./models/User.js";
-
+import Course from "./models/Course.js"
+import Quiz  from "./models/Quiz.js";
 dotenv.config();
 
 const seedQuizzes = async () => {

@@ -1,5 +1,4 @@
-// controllers/courseController.js
-import Course from "../models/course.js";
+import Course from "../models/Course.js";
 import User from "../models/User.js";
 
 // Create Course (Teacher only)

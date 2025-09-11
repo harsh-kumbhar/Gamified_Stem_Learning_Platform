@@ -5,6 +5,7 @@ import userRoutes from "./routes/userRoutes.js";
 import schoolRoutes from "./routes/schoolRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js";
 import quizRoutes from "./routes/quizRoutes.js";
+import attemptRoutes from "./routes/attemptRoutes.js"
 import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
@@ -32,6 +33,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/schools", schoolRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/quizzes", quizRoutes);
+app.use("/api/attempts", attemptRoutes);
 
 // Path helpers
 const __filename = fileURLToPath(import.meta.url);

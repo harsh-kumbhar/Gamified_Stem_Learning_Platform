@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "../pages/login";
 import Register from "../pages/register";
 import PhaserSandbox from "./components/PhaserSandbox"; 
-import StudentDashboard from "../pages/studentDashboard";
+import StudentDashboard from "../pages/studentDashboard.jsx";
 import QuizAttempt from "../pages/QuizAttempt.jsx";
 function App() {
   return (

@@ -27,7 +27,7 @@ export const createQuiz = async (req, res) => {
       courseId,
       questions,
       totalMarks: totalMarks || questions.reduce((sum, q) => sum + (q.marks || 1), 0),
-      createdBy: req.user.id,
+      teacherId: req.user.id,
     });
 
     res.status(201).json({ message: "Quiz created successfully", quiz });
@@ -52,7 +52,7 @@ export const getQuizzes = async (req, res) => {
 
     const quizzes = await Quiz.find(query)
       .populate("courseId", "title grade")
-      .populate("createdBy", "name email role");
+      .populate("teacherId", "name email role");
 
     res.json(quizzes);
   } catch (err) {

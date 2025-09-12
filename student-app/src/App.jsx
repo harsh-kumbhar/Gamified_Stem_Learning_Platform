@@ -1,9 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "../pages/login";
 import Register from "../pages/register";
-import PhaserSandbox from "./components/PhaserSandbox"; 
-import StudentDashboard from "../pages/studentDashboard.jsx";
-import QuizAttempt from "../pages/QuizAttempt.jsx";
+import PhaserSandbox from "./components/PhaserSandbox"; // <-- 1. ADD THIS IMPORT
+
 function App() {
   return (
     <Router basename="/student">
@@ -20,8 +19,7 @@ function App() {
         <Route path="/quiz/:quizId" element={<QuizAttempt />} />
 
         {/* Route for your Phaser Game */}
-        <Route path="/game" element={<PhaserSandbox />} /> 
-        <Route path="/identifier-game" element={<IdentifierGame />} />
+        <Route path="/game" element={<PhaserSandbox />} /> {/* <-- 2. ADD THIS ROUTE */}
       </Routes>
     </Router>
   );

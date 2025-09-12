@@ -25,12 +25,16 @@ function Login() {
       console.log("Login success:", res.data);
       setSuccess("Login successful ✅");
 
-      // Save JWT token in localStorage
+      // Save JWT + role in localStorage
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
 
-      // Redirect example
-      // window.location.href = "/dashboard";
-
+      // Redirect based on role
+      if (res.data.role === "teacher") {
+        window.location.href = "http://localhost:5174"; // teacher dashboard
+      } else {
+        window.location.href = "/student/dashboard"; // student dashboard
+      }
     } catch (err) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || "Login failed ❌");

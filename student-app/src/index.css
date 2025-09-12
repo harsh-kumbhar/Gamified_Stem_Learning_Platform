@@ -70,14 +70,16 @@ button:focus-visible {
 }
 /* Replace the old .game-container with this one in index.css or App.css */
 
-.game-container {
-  position: absolute; /* This is the key change */
+/* Add this to student-app/src/index.css */
+
+.phaser-game-wrapper {
+  position: fixed; /* This is the key: it locks the element to the browser window */
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #1a1a1a;
+  background-color: #000000; /* Sets the background for the whole page */
 }

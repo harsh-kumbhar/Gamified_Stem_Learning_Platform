@@ -1,9 +1,8 @@
-// src/pages/Register.jsx
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../pages/auth.css";
 import { getSchools } from "../src/api/schools";
-import { register } from "../src/api/auth"; // 👈 use the API function
+import { register } from "../src/api/auth";
 
 function Register() {
   const [name, setName] = useState("");
@@ -33,8 +32,22 @@ function Register() {
     setSuccess("");
 
     try {
-      await register(name, email, password, role, schoolId);
+      const res = await register(name, email, password, role, schoolId);
       setSuccess("Registered successfully ✅");
+
+      // ✅ If backend returns user + token, store them
+      if (res?.data?.user && res?.data?.token) {
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("role", res.data.user.role);
+
+        window.location.href =
+          res.data.user.role === "teacher"
+            ? "http://localhost:5174"
+            : "/student/dashboard";
+      }
+
+      // reset form
       setName("");
       setEmail("");
       setPassword("");

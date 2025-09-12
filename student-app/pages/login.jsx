@@ -25,9 +25,10 @@ function Login() {
       console.log("Login success:", res.data);
       setSuccess("Login successful ✅");
 
-      // Save JWT + role in localStorage
+      // Save JWT + role + user in localStorage
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.role);
+      localStorage.setItem("user", JSON.stringify(res.data.user)); // ✅ save user object
 
       // Redirect based on role
       if (res.data.role === "teacher") {

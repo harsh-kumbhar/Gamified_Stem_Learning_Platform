@@ -32,7 +32,7 @@ function StudentDashboard() {
     setError("");
 
     try {
-      const res = await axios.get(`${API_BASE}/api/quizzes/${courseId}`);
+      const res = await axios.get(`${API_BASE}/api/quizzes/course/${courseId}`);
       setQuizzes(res.data);
     } catch (err) {
       console.error("❌ Error fetching quizzes:", err);

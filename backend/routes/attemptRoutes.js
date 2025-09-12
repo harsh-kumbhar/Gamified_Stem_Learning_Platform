@@ -1,15 +1,23 @@
 import express from "express";
-import { startAttempt, submitAttempt, getAttemptsByStudent } from "../controllers/attemptController.js";
+import {
+  startAttempt,
+  submitAttempt,
+  getAttemptsByStudent,
+  getAttemptById,   // ✅ new controller
+} from "../controllers/attemptController.js";
 
 const router = express.Router();
 
-// Start an attempt
+// ✅ Start an attempt
 router.post("/start/:quizId", startAttempt);
 
-// Submit attempt
+// ✅ Submit attempt
 router.post("/submit/:quizId", submitAttempt);
 
-// Get student’s attempt history
-router.get("/:studentId", getAttemptsByStudent);
+// ✅ Get student’s attempt history
+router.get("/student/:studentId", getAttemptsByStudent);
+
+// ✅ Get a single attempt result by attemptId
+router.get("/:attemptId", getAttemptById);
 
 export default router;

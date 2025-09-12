@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
@@ -9,6 +10,7 @@ function StudentDashboard() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   // Fetch courses on load
   useEffect(() => {
@@ -79,15 +81,21 @@ function StudentDashboard() {
             <ul>
               {quizzes.map((q) => (
                 <li key={q._id}>
-                <button onClick={() => window.location.href = `/student/quiz/${q._id}`}>
-                  {q.title}
-                </button>
-              </li>
+                  <button onClick={() => navigate(`/quiz/${q._id}`)}>
+                    {q.title}
+                  </button>
+                </li>
               ))}
             </ul>
           )}
         </div>
       )}
+
+      {/* Games Section */}
+      <div className="games-section">
+        <h3>🎮 Games</h3>
+        <button onClick={() => navigate("/games")}>Go to Games</button>
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import PhaserSandbox from "./components/PhaserSandbox";
 import StudentDashboard from "../pages/StudentDashboard.jsx";
 import QuizAttempt from "../pages/QuizAttempt.jsx";
 import ResultPage from "../pages/ResultPage.jsx";
-
+import IdentifierGame from "./components/IdentifierGame.jsx"
 
 function App() {
   return (
@@ -20,6 +20,9 @@ function App() {
 
         {/* ✅ Add this */}
         <Route path="/result/:attemptId" element={<ResultPage />} />
+        {/* Route for your Phaser Game */}
+        <Route path="/game" element={<PhaserSandbox />} /> {/* <-- 2. ADD THIS ROUTE */}
+        <Route path="/identifier-game" element={<IdentifierGame />} />
       </Routes>
     </Router>
   );

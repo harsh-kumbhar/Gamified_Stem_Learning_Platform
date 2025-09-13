@@ -1,4 +1,3 @@
-
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -25,11 +24,11 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  padding: 0;
   min-width: 320px;
   min-height: 100vh;
   background-color: #000000; 
+  overflow: hidden; /* ✅ no scrollbars */
 }
 
 h1 {
@@ -68,18 +67,14 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-/* Replace the old .game-container with this one in index.css or App.css */
 
-/* Add this to student-app/src/index.css */
-
-.phaser-game-wrapper {
-  position: fixed; /* This is the key: it locks the element to the browser window */
+/* ✅ Phaser container fix */
+.game-container {
+  position: fixed; 
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000000; /* Sets the background for the whole page */
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+  overflow: hidden;
 }

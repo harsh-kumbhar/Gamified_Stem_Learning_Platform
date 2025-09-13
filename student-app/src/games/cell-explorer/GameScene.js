@@ -4,10 +4,10 @@ export default class GameScene extends Phaser.Scene {
     constructor() {
         super('GameScene');
         this.correctPlacements = 0;
+        this.totalLabels = 7; // total number of labels
     }
 
     preload() {
-        // ** CHANGED: No longer need to load label images **
         this.load.image('cellDiagram', 'public/assets/CellExplorerAsset/cell-diagram.png');
         this.load.image('feedbackCorrect', 'public/assets/CellExplorerAsset/feedback-correct.png');
         this.load.image('feedbackWrong', 'public/assets/CellExplorerAsset/feedback-wrong.png');
@@ -17,6 +17,7 @@ export default class GameScene extends Phaser.Scene {
         const gameWidth = this.cameras.main.width;
         const gameHeight = this.cameras.main.height;
 
+        // Heading
         this.add.text(gameWidth / 2, 60, 'Label the Animal Cell', {
             fontSize: '48px',
             fontFamily: '"Arial Black", Gadget, sans-serif',
@@ -25,49 +26,62 @@ export default class GameScene extends Phaser.Scene {
             strokeThickness: 6
         }).setOrigin(0.5);
 
+        // Cell diagram
         this.add.image(gameWidth / 2, gameHeight / 2 + 20, 'cellDiagram').setScale(0.9);
 
-        const dockHeight = 150;
+        // Dock for labels
+        const dockHeight = 180;
         const dock = this.add.graphics();
         dock.fillStyle(0x000000, 0.6);
         dock.fillRect(0, gameHeight - dockHeight, gameWidth, dockHeight);
 
-        // --- ** CHANGED: Create Draggable Text instead of Sprites ** ---
         const labelYPosition = gameHeight - dockHeight / 2;
-        const positions = [gameWidth * 0.2, gameWidth * 0.4, gameWidth * 0.6, gameWidth * 0.8];
-        const labelStyle = { fontSize: '32px', fontFamily: 'Arial', color: '#ffffff', backgroundColor: '#000000', padding: { x: 10, y: 5 } };
+        const leftMargin = 50;   // Left-aligned dock
+        const gap = 280;         // Horizontal gap between labels
 
-        // Create the text objects, make them interactive, and set their origin to the center
-        const labelNucleus = this.add.text(positions[0], labelYPosition, 'Nucleus', labelStyle).setOrigin(0.5).setInteractive();
-        const labelMito = this.add.text(positions[1], labelYPosition, 'Mitochondrion', labelStyle).setOrigin(0.5).setInteractive();
-        const labelMembrane = this.add.text(positions[2], labelYPosition, 'Cell Membrane', labelStyle).setOrigin(0.5).setInteractive();
-        const labelGolgi = this.add.text(positions[3], labelYPosition, 'Golgi Apparatus', labelStyle).setOrigin(0.5).setInteractive();
+        const labelStyle = { 
+            fontSize: '28px', 
+            fontFamily: 'Arial', 
+            color: '#ffffff', 
+            backgroundColor: '#000000', 
+            padding: { x: 8, y: 5 } 
+        };
 
-        // ** NEW: Assign a name to each text object for matching **
-        labelNucleus.name = 'labelNucleus';
-        labelMito.name = 'labelMitochondrion';
-        labelMembrane.name = 'labelCellMembrane';
-        labelGolgi.name = 'labelGolgi';
+        // Create 7 labels left-aligned
+        const labels = [
+            { text: 'Nucleus', name: 'labelNucleus' },
+            { text: 'Mitochondrion', name: 'labelMitochondrion' },
+            { text: 'Cell Membrane', name: 'labelCellMembrane' },
+            { text: 'Golgi Apparatus', name: 'labelGolgi' },
+            { text: 'Ribosome', name: 'labelRibosome' },
+            { text: 'Cytoplasm', name: 'labelCytoplasm' },
+            { text: 'Endoplasmic Reticulum', name: 'labelER' },
+        ];
 
-        this.input.setDraggable([labelNucleus, labelMito, labelMembrane, labelGolgi]);
+        const labelObjects = [];
+
+        labels.forEach((lbl, i) => {
+            const x = leftMargin + i * gap;
+            const labelObj = this.makeLabel(x, labelYPosition, lbl.text, lbl.name, labelStyle);
+            labelObjects.push(labelObj);
+        });
+
+        this.input.setDraggable(labelObjects);
+
+        // Draw separators between labels
         
-        // Add separator lines (unchanged)
-        const lineGraphics = this.add.graphics();
-        lineGraphics.lineStyle(2, 0xffffff, 0.3);
-        for (let i = 0; i < positions.length -1; i++) {
-             const separatorX = (positions[i] + positions[i+1]) / 2;
-             lineGraphics.moveTo(separatorX, gameHeight - dockHeight + 20);
-             lineGraphics.lineTo(separatorX, gameHeight - 20);
-             lineGraphics.strokePath();
-        }
+        
 
-        // --- Slot/Line creation is unchanged ---
+        // Create label slots (adjust coordinates to fit diagram)
         this.createLabelSlotAndLine({ name: 'labelNucleus', organelleX: 930, organelleY: 520, slotX: 1400, slotY: 300 });
         this.createLabelSlotAndLine({ name: 'labelGolgi', organelleX: 1110, organelleY: 600, slotX: 1400, slotY: 750 });
         this.createLabelSlotAndLine({ name: 'labelMitochondrion', organelleX: 810, organelleY: 630, slotX: 520, slotY: 750 });
         this.createLabelSlotAndLine({ name: 'labelCellMembrane', organelleX: 700, organelleY: 440, slotX: 520, slotY: 300 });
+        this.createLabelSlotAndLine({ name: 'labelRibosome', organelleX: 890, organelleY: 620, slotX: 250, slotY: 500 });
+        this.createLabelSlotAndLine({ name: 'labelCytoplasm', organelleX: 1000, organelleY: 650, slotX: 1150, slotY: 900 });
+        this.createLabelSlotAndLine({ name: 'labelER', organelleX: 970, organelleY: 420, slotX: 750, slotY: 200 });
 
-        // --- Event Listeners with updated logic ---
+        // --- Event Listeners ---
         this.input.on('dragstart', (pointer, gameObject) => {
             gameObject.setData('startPos', { x: gameObject.x, y: gameObject.y });
             this.children.bringToTop(gameObject);
@@ -78,28 +92,25 @@ export default class GameScene extends Phaser.Scene {
         });
 
         this.input.on('drop', (pointer, gameObject, dropZone) => {
-            // ** CHANGED: Check the object's 'name' property instead of 'texture.key' **
             if (gameObject.name === dropZone.name) {
-                // Correct drop
                 gameObject.setPosition(dropZone.x, dropZone.y);
                 gameObject.disableInteractive();
-                
+
                 this.tweens.add({
                     targets: gameObject,
-                    scaleX: 1.1, // Scale text directly
+                    scaleX: 1.1,
                     scaleY: 1.1,
                     duration: 100,
                     yoyo: true,
                     ease: 'Sine.easeInOut'
                 });
-                
+
                 const correctFeedback = this.add.image(dropZone.x, dropZone.y, 'feedbackCorrect').setScale(0.5);
                 this.tweens.add({ targets: correctFeedback, alpha: 0, duration: 1000, ease: 'Power2' });
 
                 this.correctPlacements++;
                 this.checkWinCondition();
             } else {
-                // Wrong drop
                 const startPos = gameObject.getData('startPos');
                 gameObject.setPosition(startPos.x, startPos.y);
 
@@ -116,18 +127,23 @@ export default class GameScene extends Phaser.Scene {
         });
     }
 
+    makeLabel(x, y, text, name, style) {
+        const label = this.add.text(x, y, text, style).setOrigin(0.5).setInteractive();
+        label.name = name;
+        return label;
+    }
+
     createLabelSlotAndLine(config) {
-        // This function is unchanged
         const { name, organelleX, organelleY, slotX, slotY } = config;
-        const slotWidth = 250;
-        const slotHeight = 70;
-        
+        const slotWidth = 220;
+        const slotHeight = 60;
+
         const graphics = this.add.graphics();
         graphics.fillStyle(0x000000, 0.5);
         graphics.lineStyle(3, 0xffffff, 0.7);
         graphics.strokeRect(slotX - slotWidth / 2, slotY - slotHeight / 2, slotWidth, slotHeight);
         graphics.fillRect(slotX - slotWidth / 2, slotY - slotHeight / 2, slotWidth, slotHeight);
-        
+
         const line = this.add.graphics();
         line.lineStyle(3, 0xffffff, 0.9);
         line.moveTo(organelleX, organelleY);
@@ -139,8 +155,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     checkWinCondition() {
-        if (this.correctPlacements >= 4) {
-             this.game.events.emit('game-over', { score: 100, passed: true });
+        if (this.correctPlacements >= this.totalLabels) {
+            this.game.events.emit('game-over', { score: 100, passed: true });
         }
     }
 }

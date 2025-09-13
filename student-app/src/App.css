@@ -1,9 +1,11 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
   text-align: center;
 }
+
 
 .logo {
   height: 6em;
@@ -53,15 +55,15 @@ html, body, #root {
 }
 
 /* Replace the old .game-container with this one in index.css or App.css */
-
 .game-container {
-  position: absolute; /* This is the key change */
+  position: fixed; /* fills whole screen */
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #1a1a1a;
+  background-color: #000000; /* keeps background consistent */
+  overflow: hidden; /* stops scrolling */
 }

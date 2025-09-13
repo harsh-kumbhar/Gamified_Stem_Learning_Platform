@@ -12,6 +12,7 @@ import TeacherDashboard from "../../teacher-dashboard/pages/TeacherDashboard.jsx
 
 function App() {
   return (
+    <Router>
     <Routes>
       {/* Auth */}
       <Route path="/" element={<Register />} />

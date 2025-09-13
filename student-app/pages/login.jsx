@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import "../pages/auth.css";
@@ -10,6 +10,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate(); // ✅ needed for redirect
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,11 +31,14 @@ function Login() {
       localStorage.setItem("role", res.data.user.role);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      // Redirect based on role
-      if (res.data.user.role === "teacher") {
-        window.location.href = "http://localhost:5174/dashboard"; // teacher-dashboard
+      // ✅ Redirect based on role
+      if (res.data.user.role === "student") {
+        navigate("/student/dashboard");
+      } else if (res.data.user.role === "teacher") {
+        navigate("/teacher/dashboard");
       } else {
-        window.location.href = "http://localhost:5173/student/dashboard"; // student-app
+        // fallback if role is missing/unknown
+        navigate("/");
       }
     } catch (err) {
       console.error("Login error:", err);

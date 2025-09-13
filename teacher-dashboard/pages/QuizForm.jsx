@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { createQuiz } from "../api/quizzes";
-import { getCourses } from "../api/courses";
+import { createQuiz } from "../src/api/auth";
 
 export default function QuizForm() {
   const [title, setTitle] = useState("");

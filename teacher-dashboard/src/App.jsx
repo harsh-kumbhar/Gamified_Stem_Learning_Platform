@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import TeacherDashboard from "./pages/TeacherDashboard";
-import CoursesPage from "./pages/CoursesPage";
-import QuizzesPage from "./pages/QuizzesPage";
-import CourseForm from "./pages/CourseForm";
-import QuizForm from "./pages/QuizForm";
+import TeacherDashboard from "../pages/TeacherDashboard";
+import CoursesPage from "../pages/CoursesPage";
+import QuizzesPage from "../pages/QuizzesPage";
+import CourseForm from "../pages/CourseForm";
+import QuizForm from "../pages/QuizForm";
 
 function App() {
   return (

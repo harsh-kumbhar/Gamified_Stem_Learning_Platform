@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createCourse } from "../api/courses";
+import { createCourse } from "../src/api/auth";
 
 export default function CourseForm() {
   const [title, setTitle] = useState("");

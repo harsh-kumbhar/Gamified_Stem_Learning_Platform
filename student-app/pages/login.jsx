@@ -27,17 +27,15 @@ function Login() {
 
       // Save JWT + role + user in localStorage
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.role);
-      localStorage.setItem("user", JSON.stringify(res.data.user)); // ✅ save user object
+      localStorage.setItem("role", res.data.user.role);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      const { token, role } = res.data;
       // Redirect based on role
-// Redirect based on role
-if (res.data.role === "teacher") {
-  window.location.href = "http://localhost:5174/dashboard"; // teacher app
-} else {
-  window.location.href = "http://localhost:5173/student/dashboard"; // student app
-}
+      if (res.data.user.role === "teacher") {
+        window.location.href = "http://localhost:5174/dashboard"; // teacher-dashboard
+      } else {
+        window.location.href = "http://localhost:5173/student/dashboard"; // student-app
+      }
     } catch (err) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || "Login failed ❌");

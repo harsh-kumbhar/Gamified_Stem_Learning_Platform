@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/login";
 import Register from "../pages/register";
 import PhaserSandbox from "./components/PhaserSandbox"; 
@@ -11,30 +11,28 @@ import TeacherDashboard from "../../teacher-dashboard/pages/TeacherDashboard.jsx
 
 function App() {
   return (
-    <Router basename="/">
-      <Routes>
-        {/* Auth */}
-        <Route path="/" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <Routes>
+      {/* Auth */}
+      <Route path="/" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-        {/* Student module */}
-        <Route path="/student/dashboard" element={<StudentDashboard />} />
+      {/* Student module */}
+      <Route path="/student/dashboard" element={<StudentDashboard />} />
 
-        {/* Quizzes */}
-        <Route path="/quiz/:quizId" element={<QuizAttempt />} />
-        <Route path="/result/:attemptId" element={<ResultPage />} />
-        <Route path="/games" element={<Games />} />
-        <Route path="/game" element={<PhaserSandbox />} />
-        <Route path="/identifier-game" element={<IdentifierGame />} />
+      {/* Quizzes */}
+      <Route path="/quiz/:quizId" element={<QuizAttempt />} />
+      <Route path="/result/:attemptId" element={<ResultPage />} />
+      <Route path="/games" element={<Games />} />
+      <Route path="/game" element={<PhaserSandbox />} />
+      <Route path="/identifier-game" element={<IdentifierGame />} />
 
-        {/* Teacher module */}
-        <Route path="/teacher/dashboard/*" element={<TeacherDashboard />} />
+      {/* Teacher module */}
+      <Route path="/teacher/dashboard/*" element={<TeacherDashboard />} />
 
-        {/* Catch all → send to login */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </Router>
+      {/* Catch all → send to login */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   );
 }
 

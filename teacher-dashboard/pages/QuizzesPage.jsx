@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getQuizzes } from "../api/quizzes";
+import { getQuizzes } from "../src/api/auth";
 
 export default function QuizzesPage() {
   const [quizzes, setQuizzes] = useState([]);

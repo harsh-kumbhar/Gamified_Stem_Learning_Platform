@@ -6,6 +6,7 @@ import StudentDashboard from "../pages/studentDashboard.jsx";
 import QuizAttempt from "../pages/QuizAttempt.jsx";
 import ResultPage from "../pages/ResultPage.jsx";
 import IdentifierGame from "./components/IdentifierGame.jsx";
+
 import Games from "../pages/Games.jsx";
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/games" element={<Games />} />
         <Route path="/game" element={<PhaserSandbox />} />
         <Route path="/identifier-game" element={<IdentifierGame />} />
+
       </Routes>
     </Router>
   );

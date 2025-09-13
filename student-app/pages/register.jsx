@@ -42,9 +42,9 @@ function Register() {
         localStorage.setItem("role", res.data.user.role);
 
         window.location.href =
-          res.data.user.role === "teacher"
-            ? "http://localhost:5174"
-            : "/student/dashboard";
+        res.data.user.role === "teacher"
+          ? "http://localhost:5174/dashboard"
+          : "http://localhost:5173/student/dashboard";
       }
 
       // reset form

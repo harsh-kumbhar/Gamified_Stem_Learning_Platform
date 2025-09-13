@@ -1,32 +1,21 @@
-import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
-const STUDENT_URL = import.meta.env.VITE_STUDENT_URL || "http://localhost:5173";
-
-function TeacherDashboard() {
-  return (
-    <div>
-      <h1>Teacher Dashboard</h1>
-      <p>Welcome, you can manage courses and quizzes here.</p>
-    </div>
-  );
-}
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import TeacherDashboard from "../pages/TeacherDashboard";
+import CoursesPage from "../pages/CoursesPage";
+import QuizzesPage from "../pages/QuizzesPage";
+import CourseForm from "../pages/CourseForm";
+import QuizForm from "../pages/QuizForm";
 
 function App() {
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-
-   
-  if (!token || role !== "teacher") {
-  window.location.href = `${STUDENT_URL}student/login`;
-    }
-  }, []);
-
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<TeacherDashboard />} />
+        <Route path="/dashboard" element={<TeacherDashboard />}>
+          <Route index element={<Navigate to="courses" />} />
+          <Route path="courses" element={<CoursesPage />} />
+          <Route path="courses/new" element={<CourseForm />} />
+          <Route path="quizzes" element={<QuizzesPage />} />
+          <Route path="quizzes/new" element={<QuizForm />} />
+        </Route>
       </Routes>
     </Router>
   );

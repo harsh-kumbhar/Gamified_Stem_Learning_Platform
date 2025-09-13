@@ -1,6 +1,7 @@
 import express from "express";
 import Quiz from "../models/Quiz.js";
-
+import { createQuiz, getQuizzes, getQuizById, submitAttempt } from "../controllers/quizController.js";
+import { protect, authorizeRole } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // ✅ Get quizzes by courseId
@@ -28,9 +29,12 @@ router.get("/:quizId", async (req, res) => {
   }
 });
 
-import { submitAttempt } from "../controllers/quizController.js";
 
 // After other routes
 router.post("/:quizId/attempt", submitAttempt);
-
+router.post("/", protect, authorizeRole("teacher"), createQuiz);
+router.get("/", getQuizzes);
+router.get("/course/:courseId", getQuizzes);
+router.get("/:quizId", getQuizById);
+router.post("/:quizId/attempt", submitAttempt);
 export default router;

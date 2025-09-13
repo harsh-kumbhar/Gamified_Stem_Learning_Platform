@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/login";
 import Register from "../pages/register";
 import PhaserSandbox from "./components/PhaserSandbox"; 
@@ -8,17 +8,18 @@ import ResultPage from "../pages/ResultPage.jsx";
 import IdentifierGame from "./components/IdentifierGame.jsx";
 
 import Games from "../pages/Games.jsx";
+import TeacherDashboard from "../../teacher-dashboard/pages/TeacherDashboard.jsx";
+
 function App() {
   return (
-    <Router basename="/student">
-      <Routes>
-        {/* Auth */}
-        <Route path="/" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <Routes>
+      {/* Auth */}
+      <Route path="/" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-        {/* Dashboard */}
-        <Route path="/dashboard" element={<StudentDashboard />} />
+      {/* Student module */}
+      <Route path="/student/dashboard" element={<StudentDashboard />} />
 
         {/* Quizzes */}
         <Route path="/quiz/:quizId" element={<QuizAttempt />} />
@@ -28,9 +29,9 @@ function App() {
         <Route path="/games" element={<Games />} />
         <Route path="/game" element={<PhaserSandbox />} />
         <Route path="/identifier-game" element={<IdentifierGame />} />
-
       </Routes>
     </Router>
   );
 }
+
 export default App;
